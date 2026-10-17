@@ -1,296 +1,53 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StorySpark AI Studio</title>
-<meta name="description" content="Create stories and plan faceless videos with StorySpark AI.">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>StorySpark AI Studio</title>
 <style>
-:root{--bg:#0c1022;--panel:#171d37;--panel2:#202849;--text:#f7f7ff;--muted:#b5bddb;--purple:#9a7bff;--blue:#52c7ff;--line:#303958}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#242254 0,#0c1022 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-header{position:sticky;top:0;z-index:5;background:#0c1022ed;border-bottom:1px solid var(--line);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.brand{font-weight:850;font-size:19px;letter-spacing:-.5px}.brand span{color:var(--purple)}
-.small{color:var(--muted);font-size:13px}
-.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:750;background:linear-gradient(110deg,var(--purple),var(--blue));color:#10152b}
-.btn.secondary{background:var(--panel2);color:white;border:1px solid var(--line)}
-main{width:min(1120px,92%);margin:32px auto 70px}
-.hero{padding:12px 0 24px}.tag{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:1.6px}
-h1{font-size:clamp(30px,5vw,48px);letter-spacing:-1.8px;margin:9px 0}h2{font-size:20px;margin:0 0 14px}p{line-height:1.6}.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-.panel{background:linear-gradient(150deg,#1a2040,#12182d);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:18px;min-width:0}
-label{display:block;font-size:13px;color:var(--muted);margin:14px 0 7px}
-input,textarea,select{width:100%;padding:12px;background:#0c1227;color:white;border:1px solid #3a4567;border-radius:11px;outline:none}
-textarea{min-height:110px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--blue)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
-.output{white-space:pre-wrap;line-height:1.75;color:#f2f3ff;overflow-wrap:anywhere}
-.empty{padding:24px 12px;border:1px dashed #495575;border-radius:13px;text-align:center;color:var(--muted)}
-.preview{border-radius:15px;background:linear-gradient(140deg,#44358a,#16729a);min-height:185px;padding:22px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
-.preview .emoji{font-size:55px}.scene{padding:12px;border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#10162b}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
-#notice{margin:12px 0;color:#8de6ff;font-size:13px}
-@media(max-width:760px){.grid{grid-template-columns:1fr}header{padding:12px 4%}main{margin-top:20px}.panel{padding:16px}.two{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
-<header>
-  <div class="brand">✦ StorySpark <span>AI</span></div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <span id="userLabel" class="small">Checking account…</span>
-    <button class="btn secondary" id="logout">Log out</button>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="tag">YOUR CREATIVE STUDIO</div>
-    <h1>Turn your ideas into <span style="color:var(--purple)">stories.</span></h1>
-    <p class="muted">Create story drafts, plan scenes, and prepare faceless videos from your phone.</p>
-    <div id="notice">Checking your secure sign-in…</div>
-  </section>
-
-  <div class="grid">
-    <section>
-      <div class="panel">
-        <h2>✍️ Create a story</h2>
-        <label for="topic">What should your story be about?</label>
-        <input id="topic" placeholder="e.g. A child who learns honesty">
-        <div class="two">
-          <div><label for="kind">Story category</label>
-            <select id="kind">
-              <option>Life lesson</option><option>Children's story</option>
-              <option>Educational</option><option>Motivational</option><option>Adventure</option>
-            </select>
-          </div>
-          <div><label for="lang">Language</label>
-            <select id="lang"><option>English</option><option>French</option><option>Arabic</option><option>Hausa</option><option>Yoruba</option><option>Igbo</option><option>Spanish</option></select>
-          </div>
-        </div>
-        <div class="two">
-          <div><label for="style">Visual style</label>
-            <select id="style"><option>Cartoon</option><option>Realistic cinematic</option><option>Mixed style</option></select>
-          </div>
-          <div><label for="ratio">Video format</label>
-            <select id="ratio"><option>16:9 Landscape</option><option>9:16 Vertical</option><option>1:1 Square</option></select>
-          </div>
-        </div>
-        <label for="audience">Audience</label>
-        <select id="audience"><option>General audience</option><option>Children ages 3–6</option><option>Children ages 7–12</option><option>Teenagers</option></select>
-        <label for="details">Extra details (optional)</label>
-        <textarea id="details" placeholder="Characters, setting, lesson, ending…"></textarea>
-        <div class="actions">
-          <button class="btn" id="generate">Create story draft</button>
-          <button class="btn secondary" id="clear">Clear</button>
-        </div>
-        <p class="small">This free starter uses a built-in story template. It does not call an external AI model.</p>
-      </div>
-
-      <div class="panel">
-        <h2>🎬 Plan your scenes</h2>
-        <label for="sceneCount">Number of scenes</label>
-        <select id="sceneCount"><option value="4">4 scenes</option><option value="6" selected>6 scenes</option><option value="8">8 scenes</option></select>
-        <label for="narration">Narration or story text</label>
-        <textarea id="narration" placeholder="Create a story first, or paste your own narration here."></textarea>
-        <div class="actions">
-          <button class="btn" id="plan">Plan scenes</button>
-          <button class="btn secondary" id="speak">Read narration aloud</button>
-          <button class="btn secondary" id="stopSpeak">Stop voice</button>
-        </div>
-        <div id="scenes"><div class="empty">Your scene plan will appear here.</div></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="panel">
-        <h2>✨ Story workspace</h2>
-        <div id="storyOutput" class="empty">Your story will appear here after you create it.</div>
-        <div class="actions">
-          <button class="btn secondary" id="save">Save story</button>
-          <button class="btn secondary" id="copy">Copy text</button>
-          <button class="btn secondary" id="download">Download .txt</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h2>🎨 Scene preview</h2>
-        <div class="preview" id="preview">
-          <div><div class="emoji">🌟 📖 🎥</div><p>Your story's visual direction</p><span class="small">Preview artwork is illustrative, not AI-generated footage.</span></div>
-        </div>
-        <div class="actions">
-          <button class="btn secondary" id="previous">← Previous</button>
-          <button class="btn secondary" id="next">Next scene →</button>
-        </div>
-        <p id="sceneLabel" class="small">No scenes planned yet.</p>
-        <p class="small">This preview illustrates scenes using simple graphics and text. It does not generate real video clips.</p>
-      </div>
-
-      <div class="panel">
-        <h2>💾 Saved stories</h2>
-        <div id="savedList"><div class="empty">Your saved stories will appear here.</div></div>
-      </div>
-    </section>
-  </div>
-</main>
-<footer>StorySpark AI · Your ideas, your stories · Starter studio</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-"use strict";
-const SUPABASE_URL="https://byumsoyszheqlrtvuliu.supabase.co";
-const SUPABASE_KEY="sb_publishable_OaE2YMx7NHfOov5lfA0WuA_RcJqwylB";
-const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const $=id=>document.getElementById(id);
-let storyText="", sceneItems=[], sceneIndex=0, userId=null;
-
-function message(t){$("notice").textContent=t}
-async function guard(){
- try{
-  const {data,error}=await client.auth.getSession();
-  if(error)throw error;
-  if(!data.session){
-   message("Please log in to access your studio.");
-   location.replace("./index.html");
-   return false;
-  }
-  userId=data.session.user.id;
-  $("userLabel").textContent=data.session.user.email||"Signed in";
-  message("You're signed in. Your studio is ready.");
-  return true;
- }catch(e){
-  message("Unable to verify your session. Please return to the homepage and log in.");
-  return false;
- }
-}
-$("logout").addEventListener("click",async()=>{
- await client.auth.signOut();
- location.replace("./index.html");
-});
-function makeStory(){
- const topic=$("topic").value.trim();
- if(!topic){message("Enter a story idea first.");$("topic").focus();return}
- const category=$("kind").value,lang=$("lang").value,audience=$("audience").value;
- const details=$("details").value.trim();
- const names=audience.includes("Children")?["Coco","Mira","Tobi"]:["Alex","Sam","Jordan"];
- const hero=names[0],friend=names[1];
- storyText=
- "TITLE: "+topic+"\nCATEGORY: "+category+"\nLANGUAGE: "+lang+"\nAUDIENCE: "+audience+"\nVISUAL STYLE: "+$("style").value+"\nVIDEO FORMAT: "+$("ratio").value+"\n\n"+
- "SCENE 1 — THE BEGINNING\n"+
- "In a place full of possibility, "+hero+" faced a new challenge: "+topic+". Everything seemed ordinary, but a small decision was about to change the day.\n\n"+
- "SCENE 2 — THE CHALLENGE\n"+
- hero+" met "+friend+", who listened carefully. "+(details||"Together, they explored the problem and discovered that rushing to a decision was not always the answer.")+"\n\n"+
- "SCENE 3 — A CHOICE\n"+
- "A difficult moment arrived. "+hero+" had to decide whether to take the easy path or do what felt right. After a pause, "+hero+" chose to keep trying.\n\n"+
- "SCENE 4 — THE DISCOVERY\n"+
- "With patience and help from a friend, the problem began to make sense. Each small step brought a new idea and renewed confidence.\n\n"+
- "SCENE 5 — THE RESULT\n"+
- "The effort paid off. "+hero+" learned that courage, kindness, and thoughtful choices can make a difference, even when the result takes time.\n\n"+
- "SCENE 6 — THE LESSON\n"+
- "As the day ended, "+hero+" shared the lesson with others: meaningful change often starts with one good choice.\n\n"+
- "LESSON: Keep learning, treat others with care, and do not give up when a challenge feels difficult.\n\n"+
- "Note: This is a template-based draft. Review and personalize it before publishing.";
- $("storyOutput").className="output";
- $("storyOutput").textContent=storyText;
- $("narration").value=storyText;
- message("Story draft created. You can edit it before saving.");
-}
-$("generate").addEventListener("click",makeStory);
-$("clear").addEventListener("click",()=>{
- $("topic").value="";$("details").value="";$("storyOutput").textContent="Your story will appear here after you create it.";
- $("storyOutput").className="empty";storyText="";$("narration").value="";
- $("scenes").innerHTML='<div class="empty">Your scene plan will appear here.</div>';
- sceneItems=[];sceneIndex=0;drawPreview();message("Workspace cleared.");
-});
+:root{color-scheme:dark;--bg:#0c1022;--panel:#171d37;--line:#303958;--purple:#9a7bff;--blue:#52c7ff;--muted:#b5bddb}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#242254,var(--bg) 60%);color:#f7f7ff;font:16px system-ui}header{padding:14px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);position:sticky;top:0;background:#0c1022ed}.brand{font-weight:850;font-size:20px}.brand span{color:var(--purple)}main{max-width:1100px;width:92%;margin:28px auto}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}h1{font-size:clamp(30px,5vw,46px);margin:8px 0}h2{font-size:20px;margin:0 0 14px}.muted,.small{color:var(--muted)}.small{font-size:12px}label{display:block;margin:13px 0 6px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:12px;border:1px solid #3a4567;border-radius:10px;background:#0c1227;color:white;font:inherit}textarea{min-height:100px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:11px;padding:11px 14px;font-weight:700;background:linear-gradient(110deg,var(--purple),var(--blue));color:#10152b;margin:5px 4px 0 0}.secondary{background:#202849;color:white;border:1px solid var(--line)}#notice{color:var(--blue);font-size:13px}.output{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere}.empty{border:1px dashed #495575;border-radius:12px;padding:20px;text-align:center;color:var(--muted)}.scene{padding:12px;background:#10162b;border:1px solid var(--line);border-radius:12px;margin-top:9px}.preview{padding:22px;border-radius:14px;min-height:180px;text-align:center;background:linear-gradient(140deg,#44358a,#16729a)}.emoji{font-size:48px}@media(max-width:720px){.grid{grid-template-columns:1fr}header{padding:12px 4%}.two{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<header><div class="brand">✦ StorySpark <span>AI</span></div><div><span id="userLabel" class="small">Checking account…</span> <button class="btn secondary" id="logout">Log out</button></div></header>
+<main><p class="small">YOUR CREATIVE STUDIO</p><h1>Turn your ideas into <span style="color:var(--purple)">stories.</span></h1><p class="muted">Create story drafts, plan scenes, and prepare faceless videos from your phone.</p><div id="notice">Checking secure sign-in…</div>
+<div class="grid"><section>
+<div class="panel"><h2>✍️ Create a story</h2><label for="topic">Story idea</label><input id="topic" placeholder="Coco the Elephant Learns the Colors">
+<div class="two"><div><label for="kind">Category</label><select id="kind"><option>Life lesson</option><option>Children's story</option><option>Educational</option><option>Motivational</option><option>Adventure</option></select></div><div><label for="lang">Language</label><select id="lang"><option>English</option><option>French</option><option>Arabic</option><option>Hausa</option><option>Yoruba</option><option>Igbo</option><option>Spanish</option></select></div></div>
+<div class="two"><div><label for="style">Visual style</label><select id="style"><option>Cartoon</option><option>Realistic cinematic</option><option>Mixed style</option></select></div><div><label for="ratio">Video format</label><select id="ratio"><option>16:9 Landscape</option><option>9:16 Vertical</option><option>1:1 Square</option></select></div></div>
+<label for="audience">Audience</label><select id="audience"><option>Children ages 3–6</option><option>General audience</option><option>Children ages 7–12</option><option>Teenagers</option></select><label for="details">Extra details (optional)</label><textarea id="details" placeholder="Characters, setting, lesson…"></textarea><button class="btn" id="generate">Create story draft</button><button class="btn secondary" id="clear">Clear</button><p class="small">This starter uses built-in templates, not a live AI model.</p></div>
+<div class="panel"><h2>🎬 Plan scenes</h2><label for="sceneCount">Number of scenes</label><select id="sceneCount"><option>4</option><option selected>6</option><option>8</option></select><label for="narration">Narration or story text</label><textarea id="narration"></textarea><button class="btn" id="plan">Plan scenes</button><button class="btn secondary" id="speak">Read aloud</button><button class="btn secondary" id="stopSpeak">Stop voice</button><div id="scenes" class="empty">Your scene plan will appear here.</div></div>
+</section><section>
+<div class="panel"><h2>✨ Story workspace</h2><div id="storyOutput" class="empty">Your story will appear here.</div><button class="btn secondary" id="save">Save story</button><button class="btn secondary" id="copy">Copy text</button><button class="btn secondary" id="download">Download .txt</button></div>
+<div class="panel"><h2>🎨 Scene preview</h2><div id="preview" class="preview"><div class="emoji">🌟 📖 🎥</div><p>Illustrative preview, not generated footage.</p></div><button class="btn secondary" id="previous">← Previous</button><button class="btn secondary" id="next">Next →</button><p id="sceneLabel" class="small">No scenes planned yet.</p></div>
+<div class="panel"><h2>💾 Saved stories</h2><div id="savedList" class="empty">No saved stories yet.</div></div>
+</section></div></main>
+<footer class="small" style="text-align:center;padding:24px">StorySpark AI · Your ideas, your stories</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(()=>{"use strict";
+const client=window.supabase.createClient("https://byumsoyszheqlrtvuliu.supabase.co","sb_publishable_OaE2YMx7NHfOov5lfA0WuA_RcJqwylB"),$=id=>document.getElementById(id);let userId=null,storyText="",scenes=[],sceneIndex=0;
+function msg(s){$("notice").textContent=s}
+async function guard(){try{const {data,error}=await client.auth.getSession();if(error)throw error;if(!data.session){msg("Please log in first.");location.replace("./index.html");return false}userId=data.session.user.id;$("userLabel").textContent=data.session.user.email||"Signed in";msg("Signed in. Your studio is ready.");return true}catch(e){msg("Could not verify session. Return to homepage and log in.");return false}}
+$("logout").onclick=async()=>{await client.auth.signOut();location.replace("./index.html")};
+function makeStory(){let topic=$("topic").value.trim();if(!topic){msg("Enter a story idea first.");return}const category=$("kind").value,details=$("details").value.trim();let title=topic.replace(/[.”"]+$/g,""),s=[];
+if(category==="Children's story"&&/coco|elephant|color|colour/i.test(title)){title="Coco the Elephant Learns the Colors";s=[
+["🌈","The Magical Garden","One sunny morning, Coco, a friendly baby elephant with soft blue skin, big eyes, and a yellow backpack, entered a magical garden. “Today, I want to learn the colors!” Coco said."],
+["🍎","The Red Apple","Coco found a shiny red apple under a tree. “What color is this?” Coco asked. A butterfly replied, “Red!” Coco smiled. “Red, red, red!”"],
+["🔵","The Blue Ball","Beside a pond, Coco found a bright blue ball. “Blue, just like me!” Coco laughed, gently bouncing the ball across the grass."],
+["🦆","The Yellow Duck","A little yellow duck waddled over and quacked. Coco giggled. “Yellow! Your feathers are yellow!” The duck splashed happily in the pond."],
+["🐸","The Green Frog","Coco heard a tiny ribbit beside a leaf. A green frog jumped onto a rock. “Green!” Coco cheered. “The frog and the leaves are green!”"],
+["⭐","Coco Remembers","Coco remembered everything: red apple, blue ball, yellow duck, and green frog! “Learning is fun when we look carefully and stay curious!” Coco waved goodbye."]
+];if(details)s[1][2]+=" "+details}
+else if(category==="Children's story"){const hero=/rabbit/i.test(title)?"Ruby the Rabbit":/lion/i.test(title)?"Leo the Lion":/turtle/i.test(title)?"Tilly the Turtle":"Coco the Elephant";s=[["🌞","A Wonderful Morning",hero+" woke up excited for a new adventure. “I wonder what I will learn today!”"],["🌳","A New Discovery",hero+" explored a beautiful garden and discovered something surprising."],["🐦","A Friend Needs Help","A little friend had a problem. "+hero+" listened carefully and decided to help."],["💡","A Clever Idea","Together, the friends tried a new idea. It did not work at first, but they kept trying."],["🤝","Working Together","With kindness, patience, and teamwork, they solved the problem."],["🌟","A Happy Lesson",hero+" smiled. “When we are kind, curious, and brave, every day can teach us something wonderful!”"]];if(details)s[1][2]+=" "+details}
+else{s=[["🌅","The Beginning","Alex faced a new challenge: "+title+". A new day offered a chance to learn and grow."],["🧭","The Challenge","Alex explored the problem. "+(details||"A friend offered a different point of view and helped identify what mattered most.")],["💭","A Difficult Choice","Alex paused, thought carefully, and chose to act with honesty and courage."],["💡","A New Idea","By trying a different approach and learning from mistakes, Alex began to make progress."],["🤝","The Result","With patience and determination, Alex moved forward and discovered that small steps can make a difference."],["⭐","The Lesson","Alex shared the lesson: keep learning, treat people with care, and do not give up."]]}
+storyText="TITLE: "+title+"\nCATEGORY: "+category+"\nLANGUAGE: "+$("lang").value+"\nAUDIENCE: "+$("audience").value+"\nVISUAL STYLE: "+$("style").value+"\nVIDEO FORMAT: "+$("ratio").value+"\n\n"+s.map((x,i)=>"SCENE "+(i+1)+" — "+x[1]+"\n"+x[2]).join("\n\n")+"\n\nLESSON: "+(category==="Children's story"&&/coco|elephant|color|colour/i.test(title)?"We can learn by looking, listening, asking questions, and staying curious.":"Keep learning, show kindness, and face challenges with patience.")+"\n\nNote: This is a built-in story template, not a live AI-generated story.";
+$("storyOutput").className="output";$("storyOutput").textContent=storyText;$("narration").value=storyText;msg("Your improved story draft is ready!")}
+$("generate").onclick=makeStory;$("clear").onclick=()=>{$("topic").value="";$("details").value="";storyText="";$("narration").value="";$("storyOutput").className="empty";$("storyOutput").textContent="Your story will appear here.";scenes=[];sceneIndex=0;$("scenes").className="empty";$("scenes").textContent="Your scene plan will appear here.";drawPreview();msg("Workspace cleared.")};
 function getText(){return $("narration").value.trim()||storyText}
-function planScenes(){
- const text=getText();
- if(!text){message("Create a story or enter narration first.");return}
- const sentences=text.split(/(?<=[.!?])\s+/).filter(s=>s.trim());
- const count=Number($("sceneCount").value);
- sceneItems=Array.from({length:count},(_,i)=>{
-  const start=Math.floor(i*sentences.length/count),end=Math.max(start+1,Math.floor((i+1)*sentences.length/count));
-  return {title:"Scene "+(i+1),text:sentences.slice(start,end).join(" ").trim()||"Continue the story with a clear visual moment.",emoji:["🌅","🧭","💡","🤝","🌈","⭐","🎉","📖"][i%8]};
- });
- sceneIndex=0;drawScenes();drawPreview();message("Scene plan created. Review the wording before recording.");
-}
-$("plan").addEventListener("click",planScenes);
-function drawScenes(){
- $("scenes").innerHTML="";
- sceneItems.forEach((s,i)=>{
-  const div=document.createElement("div");div.className="scene";
-  const title=document.createElement("strong");title.textContent=s.emoji+" "+s.title;
-  const p=document.createElement("p");p.className="muted";p.textContent=s.text;
-  div.append(title,p);$("scenes").appendChild(div);
- });
-}
-function drawPreview(){
- const s=sceneItems[sceneIndex];
- if(!s){
-  $("preview").innerHTML='<div><div class="emoji">🌟 📖 🎥</div><p>Your story visual direction</p><span class="small">Illustrative preview, not generated footage.</span></div>';
-  $("sceneLabel").textContent="No scenes planned yet.";return;
- }
- $("preview").innerHTML="";
- const wrap=document.createElement("div");
- const emoji=document.createElement("div");emoji.className="emoji";emoji.textContent=s.emoji;
- const title=document.createElement("h3");title.textContent=s.title;
- const p=document.createElement("p");p.textContent=s.text;
- const small=document.createElement("span");small.className="small";small.textContent=$("style").value+" · "+$("ratio").value;
- wrap.append(emoji,title,p,small);$("preview").appendChild(wrap);
- $("sceneLabel").textContent="Scene "+(sceneIndex+1)+" of "+sceneItems.length;
-}
-$("previous").addEventListener("click",()=>{if(sceneItems.length){sceneIndex=(sceneIndex-1+sceneItems.length)%sceneItems.length;drawPreview()}});
-$("next").addEventListener("click",()=>{if(sceneItems.length){sceneIndex=(sceneIndex+1)%sceneItems.length;drawPreview()}});
-$("style").addEventListener("change",drawPreview);$("ratio").addEventListener("change",drawPreview);
-$("speak").addEventListener("click",()=>{
- const text=getText();
- if(!text){message("Create a story or enter narration first.");return}
- if(!("speechSynthesis" in window)){message("Speech playback isn't supported in this browser.");return}
- speechSynthesis.cancel();
- const u=new SpeechSynthesisUtterance(text);
- const map={English:"en",French:"fr",Arabic:"ar",Hausa:"ha",Yoruba:"yo",Igbo:"ig",Spanish:"es"};
- u.lang=map[$("lang").value]||"en";
- speechSynthesis.speak(u);message("Reading narration aloud. Voice availability depends on your device.");
-});
-$("stopSpeak").addEventListener("click",()=>{if("speechSynthesis" in window)speechSynthesis.cancel();message("Voice playback stopped.")});
-function savedKey(){return "storyspark-stories-"+userId}
-function getSaved(){try{return JSON.parse(localStorage.getItem(savedKey())||"[]")}catch(e){return []}}
-function renderSaved(){
- const list=getSaved();$("savedList").innerHTML="";
- if(!list.length){$("savedList").innerHTML='<div class="empty">No saved stories yet.</div>';return}
- list.forEach((item,i)=>{
-  const row=document.createElement("div");row.className="scene";
-  const title=document.createElement("strong");title.textContent=item.title;
-  const open=document.createElement("button");open.className="btn secondary";open.textContent="Open";
-  open.addEventListener("click",()=>{storyText=item.text;$("storyOutput").className="output";$("storyOutput").textContent=storyText;$("narration").value=storyText;message("Saved story opened.")});
-  const del=document.createElement("button");del.className="btn secondary";del.textContent="Delete";
-  del.addEventListener("click",()=>{const arr=getSaved();arr.splice(i,1);localStorage.setItem(savedKey(),JSON.stringify(arr));renderSaved()});
-  row.append(title,document.createElement("br"),open,del);$("savedList").appendChild(row);
- });
-}
-$("save").addEventListener("click",()=>{
- const text=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();
- if(!text){message("Create a story before saving.");return}
- const title=$("topic").value.trim()||"Untitled story";
- const arr=getSaved();arr.unshift({title,text,created:new Date().toISOString()});
- try{localStorage.setItem(savedKey(),JSON.stringify(arr.slice(0,50)));renderSaved();message("Saved in this browser on this device.")}catch(e){message("Unable to save. Your browser storage may be full.")}
-});
-$("copy").addEventListener("click",async()=>{
- const text=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();
- if(!text){message("Create a story before copying.");return}
- try{await navigator.clipboard.writeText(text);message("Story copied.")}catch(e){message("Copy isn't available here. Select the story text and copy it manually.")}
-});
-$("download").addEventListener("click",()=>{
- const text=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();
- if(!text){message("Create a story before downloading.");return}
- const blob=new Blob([text],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download="storyspark-story.txt";a.click();URL.revokeObjectURL(url);
-});
-(async()=>{const ok=await guard();if(ok)renderSaved()})();
+function plan(){const text=getText();if(!text){msg("Create a story or enter narration first.");return}const parts=text.split(/(?<=[.!?])\s+/).filter(Boolean),n=Number($("sceneCount").value);scenes=Array.from({length:n},(_,i)=>({emoji:["🌅","🧭","💡","🤝","🌈","⭐","🎉","📖"][i%8],title:"Scene "+(i+1),text:parts.slice(Math.floor(i*parts.length/n),Math.max(Math.floor(i*parts.length/n)+1,Math.floor((i+1)*parts.length/n))).join(" ")}));sceneIndex=0;drawScenes();drawPreview();msg("Scene plan created.")}
+$("plan").onclick=plan;function drawScenes(){$("scenes").className="";$("scenes").innerHTML="";scenes.forEach(s=>{const d=document.createElement("div");d.className="scene";const b=document.createElement("b");b.textContent=s.emoji+" "+s.title;const p=document.createElement("p");p.textContent=s.text;d.append(b,p);$("scenes").append(d)})}
+function drawPreview(){const el=$("preview");if(!scenes.length){el.innerHTML='<div class="emoji">🌟 📖 🎥</div><p>Illustrative preview, not generated footage.</p>';$("sceneLabel").textContent="No scenes planned yet.";return}const s=scenes[sceneIndex];el.innerHTML="";const e=document.createElement("div");e.className="emoji";e.textContent=s.emoji;const h=document.createElement("h3");h.textContent=s.title;const p=document.createElement("p");p.textContent=s.text;const small=document.createElement("div");small.className="small";small.textContent=$("style").value+" · "+$("ratio").value;el.append(e,h,p,small);$("sceneLabel").textContent="Scene "+(sceneIndex+1)+" of "+scenes.length}
+$("previous").onclick=()=>{if(scenes.length){sceneIndex=(sceneIndex-1+scenes.length)%scenes.length;drawPreview()}};$("next").onclick=()=>{if(scenes.length){sceneIndex=(sceneIndex+1)%scenes.length;drawPreview()}};$("style").onchange=drawPreview;$("ratio").onchange=drawPreview;
+$("speak").onclick=()=>{const t=getText();if(!t){msg("Create a story first.");return}if(!("speechSynthesis"in window)){msg("Speech is not supported by this browser.");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t),m={English:"en",French:"fr",Arabic:"ar",Hausa:"ha",Yoruba:"yo",Igbo:"ig",Spanish:"es"};u.lang=m[$("lang").value]||"en";speechSynthesis.speak(u);msg("Reading narration aloud.")};$("stopSpeak").onclick=()=>{if("speechSynthesis"in window)speechSynthesis.cancel();msg("Voice stopped.")};
+function key(){return "storyspark-stories-"+userId}function saved(){try{return JSON.parse(localStorage.getItem(key())||"[]")}catch(e){return[]}}
+function renderSaved(){const arr=saved(),el=$("savedList");el.innerHTML="";el.className=arr.length?"":"empty";if(!arr.length){el.textContent="No saved stories yet.";return}arr.forEach((it,i)=>{const d=document.createElement("div");d.className="scene";const b=document.createElement("b");b.textContent=it.title;const open=document.createElement("button");open.className="btn secondary";open.textContent="Open";open.onclick=()=>{storyText=it.text;$("storyOutput").className="output";$("storyOutput").textContent=it.text;$("narration").value=it.text;msg("Saved story opened.")};const del=document.createElement("button");del.className="btn secondary";del.textContent="Delete";del.onclick=()=>{let a=saved();a.splice(i,1);localStorage.setItem(key(),JSON.stringify(a));renderSaved()};d.append(b,document.createElement("br"),open,del);el.append(d)})}
+$("save").onclick=()=>{const t=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();if(!t){msg("Create a story first.");return}const a=saved();a.unshift({title:$("topic").value.trim()||"Untitled story",text:t});try{localStorage.setItem(key(),JSON.stringify(a.slice(0,50)));renderSaved();msg("Saved in this browser on this device.")}catch(e){msg("Browser storage is full.")}};
+$("copy").onclick=async()=>{const t=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();if(!t){msg("Create a story first.");return}try{await navigator.clipboard.writeText(t);msg("Story copied.")}catch(e){msg("Clipboard unavailable; select and copy the text manually.")}};
+$("download").onclick=()=>{const t=$("storyOutput").className==="output"?$("storyOutput").textContent:getText();if(!t){msg("Create a story first.");return}const u=URL.createObjectURL(new Blob([t],{type:"text/plain;charset=utf-8"})),a=document.createElement("a");a.href=u;a.download="storyspark-story.txt";a.click();URL.revokeObjectURL(u)};
+(async()=>{if(await guard())renderSaved()})();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
